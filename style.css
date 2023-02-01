@@ -1,0 +1,20 @@
+body {
+    display: grid;
+    place-items: center;
+    background-color: aliceblue;
+}
+
+p1 {
+    background-color:  rgb(138,43,226);
+    font-family: monospace; 
+    font-size: .8vh; 
+    white-space: pre-line; 
+    font-weight: bold; 
+    color: white;
+}
+
+@media (max-width: 1000px) {
+    p1 {
+        font-size: .55vw;
+    }
+}

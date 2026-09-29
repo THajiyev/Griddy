@@ -1,10 +1,26 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#140a24">
 <title>Griddy</title>
 <link rel="stylesheet" type="text/css" href="./style.css">
 </head>
 <body>
-<p1 id="griddy-text"></p1>
+<main class="stage">
+    <h1 class="title">Griddy</h1>
+    <div class="frame" id="frame" title="Tap to pause">
+        <div class="card" id="card">
+            <pre id="griddy-text" aria-label="Animated ASCII art of the Griddy dance"></pre>
+        </div>
+    </div>
+    <div class="controls">
+        <button id="toggle" type="button" aria-label="Pause">❚❚</button>
+        <input id="speed" type="range" min="2" max="30" value="10" aria-label="Speed">
+        <span id="counter">1 / 71</span>
+    </div>
+</main>
 <script src="script.js"></script>
 </body>
 </html>

@@ -7244,14 +7244,70 @@ var griddy_json = {
     ]
 };
 
+var frames = Object.keys(griddy_json)
+    .sort(function(a, b){ return a - b; })
+    .map(function(key){ return griddy_json[key].join("\n"); });
+
+var textEl = document.getElementById("griddy-text");
+var cardEl = document.getElementById("card");
+var frameEl = document.getElementById("frame");
+var toggleEl = document.getElementById("toggle");
+var speedEl = document.getElementById("speed");
+var counterEl = document.getElementById("counter");
+var timer = null;
+
 function display(){
-    var text = "";
-    var frame = griddy_json[(index%71).toString()]
-    for(var i=0; i<100; i++){
-        text+=frame[i]+"\n";
-    }
-    document.getElementById("griddy-text").innerHTML = text;
-    index+=1
+    var i = index % frames.length;
+    textEl.textContent = frames[i];
+    counterEl.textContent = (i + 1) + " / " + frames.length;
+    index += 1;
 }
 
-setInterval(display, 100);
+var LINE_HEIGHT = 1.2;
+
+// Scale the font so the whole grid fits the space available on any screen.
+// Every character gets the same rectangular cell: the font's width by LINE_HEIGHT tall.
+function fit(){
+    var probe = 100;
+    cardEl.style.fontSize = probe + "px";
+    textEl.style.lineHeight = LINE_HEIGHT;
+    var scale = Math.min(frameEl.clientWidth / cardEl.offsetWidth,
+                         frameEl.clientHeight / cardEl.offsetHeight);
+    var size = probe * scale * 0.98;
+    // Snap rows to whole device pixels so they render evenly without banding.
+    var dpr = window.devicePixelRatio || 1;
+    var row = Math.max(1, Math.floor(size * LINE_HEIGHT * dpr)) / dpr;
+    cardEl.style.fontSize = (row / LINE_HEIGHT) + "px";
+    textEl.style.lineHeight = row + "px";
+}
+
+function play(){
+    clearInterval(timer);
+    timer = setInterval(display, 1000 / speedEl.value);
+    toggleEl.textContent = "❚❚";
+    toggleEl.setAttribute("aria-label", "Pause");
+}
+
+function pause(){
+    clearInterval(timer);
+    timer = null;
+    toggleEl.textContent = "▶";
+    toggleEl.setAttribute("aria-label", "Play");
+}
+
+function toggle(){
+    if(timer){ pause(); } else { play(); }
+}
+
+toggleEl.addEventListener("click", toggle);
+frameEl.addEventListener("click", toggle);
+speedEl.addEventListener("input", function(){ if(timer){ play(); } });
+document.addEventListener("keydown", function(e){
+    if(e.code === "Space" && e.target !== toggleEl){ e.preventDefault(); toggle(); }
+});
+window.addEventListener("resize", fit);
+
+display();
+fit();
+if(document.fonts){ document.fonts.ready.then(fit); }
+play();

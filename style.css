@@ -1,20 +1,121 @@
+:root {
+    --bg: #140a24;
+    --bg-glow: #3b1470;
+    --card: rgba(255, 255, 255, 0.04);
+    --border: rgba(190, 150, 255, 0.25);
+    --text: #f3eaff;
+    --muted: #b9a6d9;
+    --accent: #b67cff;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    height: 100%;
+}
+
 body {
+    min-height: 100dvh;
+    background:
+        radial-gradient(ellipse at 50% 35%, var(--bg-glow) 0%, transparent 65%),
+        var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    overflow: hidden;
+}
+
+.stage {
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(8px, 2vh, 20px);
+    padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right))
+             max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+}
+
+.title {
+    margin: 0;
+    font-size: clamp(1.4rem, 5vh, 2.6rem);
+    font-weight: 800;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    padding-left: 0.35em; /* balance letter-spacing */
+    background: linear-gradient(90deg, #ff9de2, var(--accent), #7fd6ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* The art area grows to fill whatever space is left; script.js sizes the text inside it. */
+.frame {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
     display: grid;
     place-items: center;
-    background-color: aliceblue;
+    cursor: pointer;
 }
 
-p1 {
-    background-color:  rgb(138,43,226);
-    font-family: monospace; 
-    font-size: .8vh; 
-    white-space: pre-line; 
-    font-weight: bold; 
-    color: white;
+.card {
+    width: max-content;
+    padding: 0.8em;
+    font-size: 4px; /* replaced by script.js to fit the screen */
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background-color: var(--card);
+    box-shadow: 0 0 60px rgba(182, 124, 255, 0.25), inset 0 0 40px rgba(0, 0, 0, 0.35);
 }
 
-@media (max-width: 1000px) {
-    p1 {
-        font-size: .55vw;
-    }
+#griddy-text {
+    margin: 0;
+    font-family: ui-monospace, Menlo, Consolas, "Courier New", monospace;
+    font-size: 1em;
+    font-weight: bold;
+    line-height: 1.2; /* script.js snaps this to whole pixels */
+    white-space: pre;
+    background-image: linear-gradient(160deg, #ffffff 0%, #e6d4ff 45%, #b67cff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-variant-numeric: tabular-nums;
+}
+
+#toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: rgba(182, 124, 255, 0.15);
+    color: var(--text);
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+#toggle:hover {
+    background: rgba(182, 124, 255, 0.3);
+}
+
+#speed {
+    width: min(160px, 35vw);
+    accent-color: var(--accent);
+}
+
+#counter {
+    min-width: 4.5em;
+    text-align: right;
 }
